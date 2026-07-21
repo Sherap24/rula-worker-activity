@@ -1,0 +1,33 @@
+# Copy to configs/paths.yaml and customize, or set RULA_DATA_ROOT in the environment.
+# Committed code must not hard-code user-specific absolute paths.
+
+data_root_env_var: RULA_DATA_ROOT
+
+# Repository-relative paths (inside the project, safe for OneDrive)
+processed_subdir: data/processed
+manifests_subdir: data/manifests
+reports_subdir: reports
+outputs_subdir: outputs
+
+# Relative paths under RULA_DATA_ROOT for each source (see data_sources.yaml)
+source_dirs:
+  cml:
+    archives: cml/archives
+    extracted: cml/extracted
+  cwpv:
+    archives: cwpv/archives
+    extracted: cwpv/extracted
+  cma: cma
+  kaggle_construction: kaggle_construction
+  local_smartphone: local_smartphone
+
+# Metadata extraction
+metadata:
+  provider: opencv  # opencv | ffprobe
+  ffprobe_binary: ffprobe
+
+# Inventory output filenames (under manifests_subdir)
+inventory:
+  csv: clip_inventory.csv
+  parquet: clip_inventory.parquet
+  markdown: dataset_inventory.md

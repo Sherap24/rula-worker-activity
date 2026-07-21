@@ -1,0 +1,58 @@
+# Candidate activity taxonomy — NOT frozen until CML and CWPV labels are inspected.
+# See docs/DATASET_DECISIONS.md and docs/RESEARCH_SCOPE.md.
+
+version: candidate
+status: not_frozen
+freeze_blocked_until:
+  - CML label inspection
+  - CWPV label inspection
+
+workstreams:
+  activity_classification:
+    description: >
+      Frame- or window-level worker activity labels for recognition baselines.
+    classes:
+      - id: standing_idle
+        display_name: Standing / idle
+      - id: walking
+        display_name: Walking
+      - id: bending_stooping
+        display_name: Bending / stooping
+      - id: lifting_lowering
+        display_name: Lifting / lowering
+      - id: carrying
+        display_name: Carrying
+      - id: kneeling
+        display_name: Kneeling
+      - id: squatting
+        display_name: Squatting
+      - id: overhead_work_reaching
+        display_name: Overhead work / reaching
+      - id: other
+        display_name: Other (mapped but not in core set)
+      - id: unknown
+        display_name: Unknown / low confidence
+
+  ergonomic_screening:
+    description: >
+      Posture and duration indicators derived from pose geometry — NOT activity classes.
+    indicators:
+      - repeated_bending
+      - overhead_posture_duration
+      - kneeling_duration
+      - squatting_duration
+      - awkward_posture_proxy
+
+  zone_events:
+    description: >
+      Restricted-zone entry detected by body-center or foot-point crossing a polygon.
+      These are events, not activity classes.
+    event_types:
+      - restricted_zone_entry
+      - restricted_zone_exit
+
+label_mapping:
+  status: pending_inspection
+  notes: >
+    Mapping tables from CML and CWPV raw labels to canonical_activity will be
+    added after datasets are downloaded and inspected locally.

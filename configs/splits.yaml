@@ -1,0 +1,22 @@
+# Train/validation/test split policy — applied after inventory has subject_id where available.
+
+seed: 42
+ratios:
+  train: 0.7
+  val: 0.15
+  test: 0.15
+
+# Column in clip inventory used for subject-disjoint splitting
+subject_column: subject_id
+
+# When subject_id is missing, fall back to clip-disjoint split with warning
+allow_clip_disjoint_fallback: true
+
+# Minimum clips per subject to include in subject-disjoint split (0 = no minimum)
+min_clips_per_subject: 1
+
+output:
+  train: train.csv
+  val: val.csv
+  test: test.csv
+  audit_log: split_audit.md

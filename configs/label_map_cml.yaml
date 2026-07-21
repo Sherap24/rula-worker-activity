@@ -1,0 +1,532 @@
+# CML → taxonomy_candidate label mapping (DRAFT — CML-only provisional)
+#
+# NOT frozen. NOT globally approved. CWPV inspection may revise these decisions.
+
+version: draft
+status: provisional_cml_only
+frozen: false
+source: cml
+user_confirmed: true
+user_confirmed_at: "2026-06-30"
+confirmation_notes: >
+  Provisional CML mapping decisions reviewed and confirmed for skeleton-based
+  feature extraction. Taxonomy remains NOT frozen until CWPV label inspection.
+  CWPV may still revise canonical mappings and baseline class membership.
+
+action_type_field:
+  cml_label: action type
+  use: metadata_only
+  include_in_baseline: false
+  mapping_status: excluded_from_baseline
+  exclusion_reason: Values 1–4 have not been semantically verified
+  verified_locally: false
+
+# Prior ambiguous candidates retained for audit trail (superseded by decision_history)
+ambiguous:
+  - cml_label: hammer
+    candidates: [overhead_work_reaching, bending_stooping, other]
+    reason: Tool strike posture depends on work plane; only 8 construction samples
+  - cml_label: picking up
+    candidates: [lifting_lowering, bending_stooping]
+    reason: Bending often co-occurs with pick-up in skeleton data
+  - cml_label: hand catch
+    candidates: [carrying, other]
+    reason: Receive/catch vs transport unclear for site work
+  - cml_label: pushing
+    candidates: [carrying, other]
+    reason: Not clearly carrying; may be excluded from carry class
+  - cml_label: sitting
+    candidates: [standing_idle, other]
+    reason: Static seated vs idle standing taxonomy gap
+  - cml_label: crawling
+    candidates: [kneeling, other]
+    reason: No explicit kneeling label in CML construction subset
+  - cml_label: stand up
+    candidates: [standing_idle, other]
+    reason: Short transition vs sustained standing
+  - cml_label: action type
+    candidates: [filter_dimension, not_a_class]
+    reason: Integer metadata; semantics unverified
+
+decision_history:
+  - cml_label: stand up
+    previous_candidates: [standing_idle, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Transition into standing, not sustained standing_idle
+  - cml_label: sitting
+    previous_candidates: [standing_idle, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Seated posture must not be merged with standing_idle
+  - cml_label: hand catch
+    previous_candidates: [carrying, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Receiving/catching is not equivalent to carrying
+  - cml_label: pushing
+    previous_candidates: [carrying, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Pushing is a distinct material-handling action
+  - cml_label: pulling
+    previous_candidates: [carrying, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Pulling is a distinct material-handling action
+  - cml_label: picking up
+    previous_candidates: [lifting_lowering, bending_stooping]
+    provisional_canonical: lifting_lowering
+    include_in_baseline: true
+    confidence: medium
+    rationale: Primary semantic action is lifting; bending may co-occur
+  - cml_label: hammer
+    previous_candidates: [overhead_work_reaching, bending_stooping, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Overhead or bent posture cannot be inferred from activity name
+  - cml_label: sawing
+    previous_candidates: [overhead_work_reaching, bending_stooping, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Posture and working height are unknown
+  - cml_label: digging
+    previous_candidates: [overhead_work_reaching, bending_stooping, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Variable posture and very low sample count
+  - cml_label: crawling
+    previous_candidates: [kneeling, other]
+    provisional_canonical: other
+    include_in_baseline: false
+    rationale: Crawling is not a defensible proxy for kneeling
+
+mappings:
+  # --- Core baseline candidates (include_in_baseline: true) ---
+  - cml_label: walking
+    canonical: walking
+    confidence: high
+    mapping_status: approved_high_confidence
+    include_in_baseline: true
+    exclusion_reason: null
+    construction_subset_count_files: 2344
+    notes: Core locomotion baseline
+
+  - cml_label: walk on uneven terrain
+    canonical: walking
+    confidence: high
+    mapping_status: approved_high_confidence
+    include_in_baseline: true
+    exclusion_reason: null
+    construction_subset_count_files: 222
+    notes: Uneven-terrain walking variant
+
+  - cml_label: bending
+    canonical: bending_stooping
+    confidence: high
+    mapping_status: approved_high_confidence
+    include_in_baseline: true
+    exclusion_reason: null
+    construction_subset_count_files: 156
+
+  - cml_label: squats
+    canonical: squatting
+    confidence: high
+    mapping_status: approved_high_confidence
+    include_in_baseline: true
+    exclusion_reason: null
+    construction_subset_count_files: 188
+
+  - cml_label: picking up
+    canonical: lifting_lowering
+    confidence: medium
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    construction_subset_count_files: 58
+    notes: Bending may co-occur; provisional pending CWPV review
+
+  - cml_label: dropping
+    canonical: lifting_lowering
+    confidence: high
+    mapping_status: approved_high_confidence
+    include_in_baseline: true
+    exclusion_reason: null
+    construction_subset_count_files: 76
+    notes: Lowering phase
+
+  - cml_label: moving object
+    canonical: carrying
+    confidence: medium
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    construction_subset_count_files: 18
+
+  - cml_label: exchanging objects
+    canonical: carrying
+    confidence: medium
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    construction_subset_count_files: 38
+
+  # --- Mapped but excluded from first baseline ---
+  - cml_label: standing
+    canonical: standing_idle
+    confidence: high
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Very small sample count; insufficient subjects for defensible split
+    construction_subset_count_files: 16
+    notes: ~8 logical samples; do not auto-include in baseline
+
+  - cml_label: stand up
+    canonical: other
+    confidence: medium
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Transition into standing, not sustained standing_idle
+    construction_subset_count_files: 456
+
+  - cml_label: sitting
+    canonical: other
+    confidence: medium
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Seated posture must not be merged with standing_idle
+    construction_subset_count_files: 424
+
+  - cml_label: hand catch
+    canonical: other
+    confidence: medium
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Receiving/catching is not equivalent to carrying
+    construction_subset_count_files: 228
+
+  - cml_label: pushing
+    canonical: other
+    confidence: medium
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Pushing is a distinct material-handling action
+    construction_subset_count_files: 84
+
+  - cml_label: pulling
+    canonical: other
+    confidence: medium
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Pulling is a distinct material-handling action
+    construction_subset_count_files: 28
+
+  - cml_label: hammer
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Posture cannot be inferred from activity name
+    construction_subset_count_files: 8
+
+  - cml_label: sawing
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Posture and working height unknown
+    construction_subset_count_files: 2
+
+  - cml_label: digging
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Variable posture; very low sample count
+    construction_subset_count_files: 4
+
+  - cml_label: crawling
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Crawling is not a defensible proxy for kneeling
+    construction_subset_count_files: 6
+
+  # --- Low-confidence provisional mappings (inventory only, not baseline) ---
+  - cml_label: elbow to knee
+    canonical: bending_stooping
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Low-confidence proxy; excluded from first baseline
+    construction_subset_count_files: 162
+
+  - cml_label: ducking
+    canonical: bending_stooping
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Low-confidence proxy; excluded from first baseline
+    construction_subset_count_files: 22
+
+  - cml_label: stair up
+    canonical: walking
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Low-confidence locomotion variant; excluded from first baseline
+    construction_subset_count_files: 116
+
+  - cml_label: stair down
+    canonical: walking
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Low-confidence locomotion variant; excluded from first baseline
+    construction_subset_count_files: 78
+
+  - cml_label: step over
+    canonical: walking
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Low-confidence locomotion variant; excluded from first baseline
+    construction_subset_count_files: 56
+
+  - cml_label: weight lifting
+    canonical: lifting_lowering
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Gym-style motion; excluded from first baseline
+    construction_subset_count_files: 10
+
+  - cml_label: coiling a rope
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Weak material-handling proxy; excluded from first baseline
+    construction_subset_count_files: 2
+
+  # --- Other construction labels (mapped to other, excluded from baseline) ---
+  - cml_label: sit down and stand up
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Transition sequence
+    construction_subset_count_files: 120
+
+  - cml_label: get up from floor
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Transition sequence
+    construction_subset_count_files: 36
+
+  - cml_label: lay down
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Transition/posture change
+    construction_subset_count_files: 64
+
+  - cml_label: lean back
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Not a core construction activity class
+    construction_subset_count_files: 20
+
+  - cml_label: climb up
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Locomotion variant; not in core baseline
+    construction_subset_count_files: 120
+
+  - cml_label: climb down
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Locomotion variant; not in core baseline
+    construction_subset_count_files: 90
+
+  - cml_label: bolt tightening or loosening
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Tool activity; posture unknown
+    construction_subset_count_files: 16
+
+  - cml_label: drawing
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Not a core construction activity class
+    construction_subset_count_files: 12
+
+  - cml_label: poking ground
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Not a core construction activity class
+    construction_subset_count_files: 8
+
+  - cml_label: knocking
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Not a core construction activity class
+    construction_subset_count_files: 4
+
+  - cml_label: hanging
+    canonical: other
+    confidence: low
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: Not a core construction activity class
+    construction_subset_count_files: 2
+
+  # --- General motion (canonical other, excluded from baseline) ---
+  - cml_label: running
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 768
+
+  - cml_label: jumping
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 656
+
+  - cml_label: punching
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 564
+
+  - cml_label: kicking
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 450
+
+  - cml_label: throwing
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 292
+
+  - cml_label: turning
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 562
+
+  - cml_label: twists
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 14
+
+  - cml_label: swing
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 20
+
+  - cml_label: wrestle
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 4
+
+  - cml_label: falling
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 4
+
+  - cml_label: smoking
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 4
+
+  - cml_label: calling phone
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 8
+
+  - cml_label: dialing phone
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 4
+
+  - cml_label: driving
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 2
+
+  - cml_label: wearing on clothes
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 14
+
+  - cml_label: put on a hat and cap
+    canonical: other
+    mapping_status: excluded_from_baseline
+    include_in_baseline: false
+    exclusion_reason: General motion; not site-relevant baseline
+    construction_subset_count_files: 4
+
+  # --- Calibration ---
+  - cml_label: dynamic calibration
+    canonical: unknown
+    confidence: high
+    mapping_status: calibration_only
+    include_in_baseline: false
+    exclusion_reason: Calibration sequence; never used for activity training
+    construction_subset_count_files: 2
+
+unmapped_pending:
+  - cml_label: overhead_work_reaching
+    reason: No direct CML construction label; await CWPV
+  - cml_label: kneeling
+    reason: No explicit kneeling label in CML construction subset
+
+label_normalization:
+  folder_pattern: "{index}{camelCaseActivity}"
+  json_label_authoritative: true

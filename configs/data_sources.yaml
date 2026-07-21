@@ -1,0 +1,176 @@
+# Verified data source registry — planning metadata only.
+# local_status reflects repository inspection, not download success.
+
+sources:
+  - id: cml
+    display_name: Construction Motion Data Library (CML)
+    official_url: https://figshare.com/articles/dataset/Construction_Motion_Data_Library_An_Integrated_Motion_Dataset_for_On-Site_Activity_Recognition/20480787
+    doi: https://doi.org/10.6084/m9.figshare.20480787
+    supporting_repository: https://github.com/YUANYUAN2222/Integrated-public-3D-skeleton-form-CML-library
+    source_type: skeleton
+    expected_size_gb: 1.18
+    license: CC BY 4.0
+    license_notes: >
+      Attribution required. Public Figshare release; larger experimental library
+      described in the paper is not fully redistributed.
+    acquisition_method: manual_figshare_download
+    expected_local_relative_dir: cml/extracted
+    archives_relative_dir: cml/archives
+    enabled: true
+    priority: 1
+    intended_use: >
+      Primary skeleton and activity-label source. Pre-extracted 3D skeleton data;
+      do NOT run 2D video pose estimation on CML. Use for label taxonomy and
+      skeleton-based activity recognition baselines.
+    known_limitations:
+      - Public release has 6131 samples; 4333 construction-related
+      - 15-joint and 20-joint skeleton structures documented
+      - Not a video source for Week 3 pose pipeline
+      - Full experimental library not fully redistributed
+    local_status: present_unvalidated
+    local_inspection:
+      inspected_at: "2026-06-30"
+      extracted_path_verified: true
+      json_files_total: 20928
+      construction_subset_files: 8666
+      all_data_subset_files: 12262
+      joint_schemas: ["15_nodes", "20_nodes"]
+      integrity_failures: 0
+      notes: >
+        Matches expected 4333 construction samples × 2 joint schemas = 8666 files.
+        Nested extract layout (e.g. All_DATA/All_DATA/). Archive zip files also
+        present under extracted/ — excluded from inventory scan.
+
+  - id: cwpv
+    display_name: Construction Working Postures Video Dataset (CWPV)
+    official_url: https://figshare.com/articles/dataset/CWPV_A_Working_Postures_of_the_Construction_Working_Postures_Videos_dataset/27907818
+    doi: https://doi.org/10.6084/m9.figshare.27907818
+    supporting_repository: null
+    source_type: video_and_imu
+    expected_size_gb: 11.61
+    license: CC BY 4.0
+    license_notes: >
+      Attribution required. Version 3 as of 2026-02-18. Retain included dataset README.
+    acquisition_method: manual_figshare_download
+    expected_local_relative_dir: cwpv/extracted
+    archives_relative_dir: cwpv/archives
+    enabled: true
+    priority: 2
+    intended_use: >
+      Primary Week 3 video source for pose extraction and movement features.
+      Vision baseline uses video only; IMU processing is deferred.
+    known_limitations:
+      - 21 subjects, 8 construction tasks/postures, 3 repetitions
+      - 504 described video sets, four camera positions per motion
+      - Requires substantial free disk space (~11.6 GB)
+      - IMU data available but outside initial vision baseline
+    local_status: present_unvalidated
+    local_inspection:
+      inspected_at: "2026-07-06"
+      archives_download_in_progress: true
+      archive_file: Video_Data.rar
+      archive_size_bytes_expected: 12266253286
+      readme_pdf_present: true
+      extracted_sample_videos: 1
+      notes: >
+        Full Video Data.rar download in progress (~11.6 GB). README.pdf present.
+        One pipeline-validation sample (0111Camera_1.avi) in extracted/ until RAR completes.
+        Run scripts/download_cwpv.py to download and 7-Zip extract.
+
+  - id: cma
+    display_name: Construction Meta Action Dataset (CMA)
+    official_url: https://github.com/S1mpleyang/ConstructionActionRecognition
+    doi: null
+    supporting_repository: https://github.com/S1mpleyang/ConstructionActionRecognition
+    source_type: video
+    expected_size_gb: null
+    license: research_only_non_commercial
+    license_notes: >
+      Distributed via Baidu Netdisk; extraction code z7a2. Non-commercial research
+      restriction. Legacy repo targets Python 3.6.
+    acquisition_method: manual_baidu_netdisk
+    expected_local_relative_dir: cma
+    archives_relative_dir: null
+    enabled: false
+    priority: 4
+    intended_use: >
+      Optional later RGB action-recognition comparison (Week 7 stretch). Not core
+      to Week 2–3 foundation.
+    known_limitations:
+      - 7 actions, 1595 clips
+      - Baidu Netdisk access required
+      - Python 3.6 legacy setup
+      - Non-commercial restriction
+    local_status: not_downloaded
+
+  - id: icon_pose
+    display_name: ICON-Pose (egocentric construction worker pose/action)
+    official_url: https://ascelibrary.org/doi/10.1061/9780784485224.082
+    doi: https://doi.org/10.1061/9780784485224.082
+    supporting_repository: null
+    source_type: egocentric_pose
+    expected_size_gb: null
+    license: unknown
+    license_notes: >
+      Linked paper dataset; not treated as immediately accessible core download.
+    acquisition_method: deferred
+    expected_local_relative_dir: icon_pose
+    archives_relative_dir: null
+    enabled: false
+    priority: 5
+    intended_use: >
+      Future egocentric extension. Deferred from core pipeline.
+    known_limitations:
+      - No verified public bulk download path in project registry
+      - Egocentric viewpoint differs from CWPV multi-camera setup
+    local_status: not_downloaded
+
+  - id: kaggle_construction
+    display_name: Kaggle Construction Activity Recognition Dataset
+    official_url: https://www.kaggle.com/datasets/ehsaanali/construction-activity-recognition-dataset
+    doi: null
+    supporting_repository: null
+    source_type: video_unknown_structure
+    expected_size_gb: null
+    license: CC0
+    license_notes: >
+      Kaggle page displays CC0/Public Domain. Labels, subjects, video consistency,
+      and split structure NOT verified locally. Optional after CML and CWPV.
+    acquisition_method: manual_kaggle_download
+    expected_local_relative_dir: kaggle_construction
+    archives_relative_dir: null
+    enabled: false
+    priority: 3
+    intended_use: >
+      Optional supplementary source after core datasets inspected. Do not use as
+      core source until locally audited.
+    known_limitations:
+      - Label and subject metadata unverified
+      - Split structure unknown
+      - Must not replace CML/CWPV for taxonomy decisions
+    local_status: not_downloaded
+
+  - id: local_smartphone
+    display_name: Local smartphone capture (domain transfer)
+    official_url: null
+    doi: null
+    supporting_repository: null
+    source_type: local_video
+    expected_size_gb: null
+    license: user_consent_required
+    license_notes: >
+      Self-captured research clips with informed consent (or self-consent).
+      Week 5 domain-transfer evaluation only — not for public redistribution.
+    acquisition_method: local_capture
+    expected_local_relative_dir: local_smartphone
+    archives_relative_dir: null
+    enabled: true
+    priority: 6
+    intended_use: >
+      Domain-transfer evaluation in Week 5. Score CWPV-trained baselines on
+      phone video; do not retrain on phone clips in this phase.
+    known_limitations:
+      - Small self-captured set; not a training corpus
+      - Domain shift vs CWPV multi-view lab/site cameras
+      - Filenames encode provisional ground-truth labels
+    local_status: present_unvalidated

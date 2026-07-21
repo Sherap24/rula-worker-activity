@@ -1,0 +1,93 @@
+# CWPV motion → taxonomy_candidate label mapping (DRAFT — provisional)
+#
+# NOT frozen. CWPV motions are scripted postures (M1–M8), not pure activity classes.
+# See CWPV README.pdf (archives/) and docs/DATASET_DECISIONS.md.
+
+version: draft
+status: provisional_cwpv_only
+frozen: false
+source: cwpv
+user_confirmed: false
+
+motion_reference:
+  M1: Standing, twist torso, one hand above head, hammer strike
+  M2: Standing, lean forward and twist, hand above head hammer
+  M3: Standing, lean forward, semi-squat, shovel flat motion
+  M4: Squat, lift object to chest, hold ~5s, lower
+  M5: Squatting, hammer strike at 50 cm height
+  M6: Kneeling, hammer strike at ground height
+  M7: Squatting, carry bricks one-handed side to front
+  M8: Standing, lean forward, transport bricks side to front
+
+mappings:
+  - motion_id: "1"
+    raw_motion_label: M1_overhead_hammer_standing
+    canonical: overhead_work_reaching
+    confidence: high
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    notes: Scripted overhead hammer posture
+
+  - motion_id: "2"
+    raw_motion_label: M2_overhead_hammer_lean_twist
+    canonical: overhead_work_reaching
+    confidence: medium
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    notes: Overhead hammer with forward lean; bending may co-occur
+
+  - motion_id: "3"
+    raw_motion_label: M3_shovel_semi_squat
+    canonical: squatting
+    confidence: medium
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    notes: Semi-squat shoveling; bending_stooping may co-occur
+
+  - motion_id: "4"
+    raw_motion_label: M4_squat_lift_hold
+    canonical: lifting_lowering
+    confidence: high
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    notes: Squat-lift-hold scripted task
+
+  - motion_id: "5"
+    raw_motion_label: M5_squat_hammer
+    canonical: squatting
+    confidence: high
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    notes: Squatting hammer strike
+
+  - motion_id: "6"
+    raw_motion_label: M6_kneel_hammer
+    canonical: kneeling
+    confidence: high
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    notes: Kneeling hammer strike
+
+  - motion_id: "7"
+    raw_motion_label: M7_squat_carry_bricks
+    canonical: carrying
+    confidence: high
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    notes: Squatting one-handed brick carry
+
+  - motion_id: "8"
+    raw_motion_label: M8_lean_carry_bricks
+    canonical: carrying
+    confidence: medium
+    mapping_status: provisional
+    include_in_baseline: true
+    exclusion_reason: null
+    notes: Standing lean-forward brick transport; bending may co-occur

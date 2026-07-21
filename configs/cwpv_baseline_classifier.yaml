@@ -1,0 +1,9 @@
+# CWPV baseline classifier settings (Week 4)
+
+random_seed: 42
+label_column: canonical_activity
+exclude_test_from_training: true
+
+models:
+  - logistic_regression
+  - random_forest

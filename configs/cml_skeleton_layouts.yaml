@@ -1,0 +1,76 @@
+# CML skeleton layout definitions for feature extraction (no pose estimation).
+
+layouts:
+  15:
+    skeleton_layout: 15
+    bone_count: 15
+    bones:
+      - Head
+      - Shouldercentre
+      - Spine
+      - Leftshoulder
+      - Leftelbow
+      - Lefthand
+      - Rightshoulder
+      - Rightelbow
+      - Righthand
+      - Lefthip
+      - Leftknee
+      - Leftfoot
+      - Righthip
+      - Rightknee
+      - Rightfoot
+    hip_center_bones: [Lefthip, Righthip]
+    angles:
+      - name: trunk_flexion_deg
+        points: [Head, Spine, Hipcentre_proxy]
+      - name: left_knee_flexion_deg
+        points: [Lefthip, Leftknee, Leftfoot]
+      - name: right_knee_flexion_deg
+        points: [Righthip, Rightknee, Rightfoot]
+      - name: left_shoulder_elevation_deg
+        points: [Leftelbow, Leftshoulder, Spine]
+      - name: right_shoulder_elevation_deg
+        points: [Rightelbow, Rightshoulder, Spine]
+
+  20:
+    skeleton_layout: 20
+    bone_count: 20
+    bones:
+      - Head
+      - Shouldercentre
+      - Spine
+      - Leftshoulder
+      - Leftelbow
+      - Lefthand
+      - Rightshoulder
+      - Rightelbow
+      - Righthand
+      - Lefthip
+      - Leftknee
+      - Leftfoot
+      - Righthip
+      - Rightknee
+      - Rightfoot
+      - Hipcentre
+      - Leftwrist
+      - Leftankle
+      - Rightwrist
+      - Rightankle
+    hip_center_bones: [Hipcentre]
+    angles:
+      - name: trunk_flexion_deg
+        points: [Head, Spine, Hipcentre]
+      - name: left_knee_flexion_deg
+        points: [Lefthip, Leftknee, Leftankle]
+      - name: right_knee_flexion_deg
+        points: [Righthip, Rightknee, Rightankle]
+      - name: left_elbow_flexion_deg
+        points: [Leftshoulder, Leftelbow, Leftwrist]
+      - name: right_elbow_flexion_deg
+        points: [Rightshoulder, Rightelbow, Rightwrist]
+
+feature_output:
+  train_15: data/processed/cml/features_15_nodes_train.parquet
+  train_20: data/processed/cml/features_20_nodes_train.parquet
+  comparison_report: reports/cml_skeleton_feature_comparison.md

@@ -1,0 +1,12 @@
+# CWPV pose feature extraction settings (Week 4)
+
+sliding_window:
+  window_size: 30   # frames (~1s at 30 fps; ~2s if frame_stride=2)
+  stride: 15
+
+extraction:
+  frame_stride: 2   # every 2nd frame — ~2x faster; still enough for baseline kinematics
+
+output:
+  train_val_features: data/processed/cwpv/features_train_val.parquet
+  report: reports/cwpv_pose_feature_extraction.md

@@ -1,0 +1,13 @@
+# Local smartphone pose feature extraction (Week 5 domain transfer)
+# Keep window/stride aligned with CWPV for fair comparison.
+
+sliding_window:
+  window_size: 30
+  stride: 15
+
+extraction:
+  frame_stride: 2
+
+output:
+  features: data/processed/local_smartphone/features.parquet
+  report: reports/smartphone_pose_feature_extraction.md

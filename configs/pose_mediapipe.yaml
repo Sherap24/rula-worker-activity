@@ -1,0 +1,17 @@
+# MediaPipe Pose configuration for Week 3 video extraction.
+
+mediapipe:
+  model_path: configs/models/pose_landmarker_lite.task
+  model_url: https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task
+  num_poses: 1
+  min_pose_detection_confidence: 0.5
+  min_pose_presence_confidence: 0.5
+  min_tracking_confidence: 0.5
+
+extraction:
+  default_max_videos: 2
+  default_max_frames: null
+  output_subdir: cwpv/pose
+
+rendering:
+  output_subdir: cwpv/annotated

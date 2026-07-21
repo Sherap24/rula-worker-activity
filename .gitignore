@@ -1,0 +1,94 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment and secrets
+.env
+.env.local
+*.pem
+
+# IDE / editor
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+*~
+
+# Local planning docs / PDFs (not source)
+Files/
+
+# Generated pipeline reports (reproducible via CLI)
+reports/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Project outputs (generated)
+outputs/*
+!outputs/.gitkeep
+data/manifests/*
+!data/README.md
+
+# Pose model bundle (auto-downloaded on first extract-pose run)
+configs/models/*.task
+
+# Local processed data inside repo (use RULA_DATA_ROOT for raw data)
+data/processed/
+
+# Large media and datasets (never commit)
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wmv
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# User-specific path configs (copy from example)
+configs/paths.yaml
