@@ -37,6 +37,9 @@ from worker_activity.data.taxonomy import load_taxonomy_candidate
 from worker_activity.pose.pipeline import extract_pose_from_inventory
 from worker_activity.reporting.markdown import bullet_list, write_markdown_report
 from worker_activity.viz import render_annotated_video
+from worker_activity.ergonomics.screening import screen_ergonomics
+from worker_activity.zones.events import detect_zone_events
+from worker_activity.week6_report import build_week6_report
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -106,6 +109,62 @@ def _build_parser() -> argparse.ArgumentParser:
     sub.add_parser(
         "evaluate-domain-transfer",
         help="Score smartphone features with CWPV-trained baselines (eval only)",
+    )
+
+    screen_ergo = sub.add_parser(
+        "screen-ergonomics",
+        help="Screening-level ergonomic duration/frequency indicators from pose",
+    )
+    screen_ergo.add_argument(
+        "--source",
+        choices=["both", "phone", "cwpv"],
+        default="both",
+        help="Which videos to screen (default: both phone + CWPV sample)",
+    )
+    screen_ergo.add_argument(
+        "--max-videos",
+        type=int,
+        default=None,
+        help="Limit videos per selected source (smoke tests)",
+    )
+
+    zone_events = sub.add_parser(
+        "detect-zone-events",
+        help="Detect restricted-zone entry/exit vs demo polygons",
+    )
+    zone_events.add_argument(
+        "--source",
+        choices=["both", "phone", "cwpv"],
+        default="both",
+        help="Which videos to process (default: both phone + CWPV sample)",
+    )
+    zone_events.add_argument(
+        "--max-videos",
+        type=int,
+        default=None,
+        help="Limit videos per selected source (smoke tests)",
+    )
+
+    week6 = sub.add_parser(
+        "build-week6-report",
+        help="End-to-end Week 6 report (activity + ergonomics + zones)",
+    )
+    week6.add_argument(
+        "--source",
+        choices=["both", "phone", "cwpv"],
+        default="both",
+        help="Which videos to include in B/C pipelines",
+    )
+    week6.add_argument(
+        "--max-videos",
+        type=int,
+        default=None,
+        help="Limit videos per selected source",
+    )
+    week6.add_argument(
+        "--skip-pipelines",
+        action="store_true",
+        help="Reuse existing week6 CSVs instead of re-running screening/zones",
     )
 
     build_inv = sub.add_parser(
@@ -186,6 +245,9 @@ def main(argv: list[str] | None = None) -> int:
         "train-cwpv-baseline": cmd_train_cwpv_baseline,
         "extract-smartphone-features": cmd_extract_smartphone_features,
         "evaluate-domain-transfer": cmd_evaluate_domain_transfer,
+        "screen-ergonomics": cmd_screen_ergonomics,
+        "detect-zone-events": cmd_detect_zone_events,
+        "build-week6-report": cmd_build_week6_report,
         "build-inventory": cmd_build_inventory,
         "inspect-cwpv": cmd_inspect_cwpv,
         "extract-pose": cmd_extract_pose,
@@ -557,6 +619,69 @@ def cmd_evaluate_domain_transfer(_args: argparse.Namespace) -> int:
         print(f"  {name}: accuracy={metrics['accuracy']:.4f}, macro_f1={metrics['macro_f1']:.4f}")
     print(f"  Report: {result.report_path}")
     print(f"  Predictions: {result.predictions_path}")
+    for warning in result.warnings:
+        print(f"  NOTE: {warning}")
+    return 0
+
+
+def cmd_screen_ergonomics(args: argparse.Namespace) -> int:
+    paths = resolve_paths_config()
+    ensure_repo_output_dirs(paths)
+    try:
+        result = screen_ergonomics(source=args.source, max_videos=args.max_videos)
+    except Exception as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+
+    print("Ergonomic screening complete.")
+    print(f"  Videos: {len(result.metrics)}")
+    print(f"  CSV: {result.output_path}")
+    print(f"  Report: {result.report_path}")
+    if result.errors:
+        print(f"  Errors: {len(result.errors)}")
+    return 0
+
+
+def cmd_detect_zone_events(args: argparse.Namespace) -> int:
+    paths = resolve_paths_config()
+    ensure_repo_output_dirs(paths)
+    try:
+        result = detect_zone_events(source=args.source, max_videos=args.max_videos)
+    except Exception as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+
+    n_events = len(result.events)
+    print("Zone-event detection complete.")
+    print(f"  Videos: {len(result.summary)}")
+    print(f"  Events: {n_events}")
+    print(f"  Events CSV: {result.events_path}")
+    print(f"  Summary CSV: {result.summary_path}")
+    print(f"  Report: {result.report_path}")
+    if result.errors:
+        print(f"  Errors: {len(result.errors)}")
+    return 0
+
+
+def cmd_build_week6_report(args: argparse.Namespace) -> int:
+    paths = resolve_paths_config()
+    ensure_repo_output_dirs(paths)
+    try:
+        result = build_week6_report(
+            source=args.source,
+            max_videos=args.max_videos,
+            skip_pipelines=args.skip_pipelines,
+        )
+    except Exception as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+
+    print("Week 6 end-to-end report complete.")
+    print(f"  Report: {result.report_path}")
+    if result.ergonomics_path:
+        print(f"  Ergonomics: {result.ergonomics_path}")
+    if result.zone_events_path:
+        print(f"  Zone events: {result.zone_events_path}")
     for warning in result.warnings:
         print(f"  NOTE: {warning}")
     return 0

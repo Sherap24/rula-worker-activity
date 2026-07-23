@@ -1,0 +1,32 @@
+# Demo restricted-zone polygons in normalized image coordinates [0, 1].
+# Not real jobsite annotations — research/demo only.
+# Point tested: body_center (hip midpoint) by default.
+
+point_mode: body_center  # body_center | foot_point
+min_consecutive_frames: 2
+default_fps: 30.0
+
+# Shared template applied when a video has no per-video override.
+default_polygons:
+  - id: restricted_zone_demo
+    label: demo_restricted_zone
+    # Lower-right quadrant — useful for left-to-right walk-across demos.
+    vertices:
+      - [0.55, 0.35]
+      - [0.95, 0.35]
+      - [0.95, 0.95]
+      - [0.55, 0.95]
+
+# Optional per-video overrides keyed by file stem (without extension).
+# Example:
+# video_polygons:
+#   carrying_01:
+#     - id: phone_zone_a
+#       label: marked_tape_zone
+#       vertices: [[0.4, 0.4], [0.8, 0.4], [0.8, 0.9], [0.4, 0.9]]
+video_polygons: {}
+
+cwpv_sample:
+  view_id: camera_1
+  motion_ids: ["1", "3", "4", "6", "8"]
+  max_videos: 5
